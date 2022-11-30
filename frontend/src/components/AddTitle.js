@@ -3,8 +3,16 @@ import { TodoContext } from "../todoContext";
 import axios from "axios";
 
 const AddTitle = () => {
-  const { openTitleModel, setOpenTitleModel, setTitleData } =
-    useContext(TodoContext);
+  const {
+    openTitleModel,
+    setOpenTitleModel,
+    setTitleData,
+    isTaskModel,
+    setIsTaskModel,
+    setTodoId,
+    todoId,
+    setTaskData,
+  } = useContext(TodoContext);
   const [task, setTask] = useState("");
   const [title, setTitle] = useState("");
 
@@ -14,14 +22,24 @@ const AddTitle = () => {
 
   const handleAddTodo = async () => {
     try {
-      let creatTodo = await axios.post("/createTitle", { title, task });
-      console.log("data::", creatTodo.data);
+      if (isTaskModel) {
+        let createTask = await axios.put(`/task/addUpdateTask/${todoId}`, {
+          task,
+        });
+        console.log("createTask::", createTask.data);
+        let taskDetails = await axios.get(`/task/getAllTask/${todoId}`);
+        setTaskData(taskDetails.data.task);
+      } else {
+        let creatTodo = await axios.post("/createTitle", { title, task });
+        console.log("data::", creatTodo.data);
 
-      let titleData = await axios.get("/getAlltitle");
-      setTitleData(titleData.data.title);
-      setOpenTitleModel(false);
+        let titleData = await axios.get("/getAlltitle");
+        setTitleData(titleData.data.title);
+      }
     } catch (error) {
       console.log("handleAddTodo Error::", error.message);
+    } finally {
+      setOpenTitleModel(false);
     }
   };
 
@@ -31,7 +49,9 @@ const AddTitle = () => {
         placeholder="Enter Your Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="p-[5PX] border-[2px] rounded-[10px] outline-none focus:border-darkTheme"
+        className={`p-[5PX] border-[2px] rounded-[10px] outline-none focus:border-darkTheme ${
+          isTaskModel ? "hidden" : "block"
+        }`}
       />
       <input
         placeholder="Enter Your Task"
@@ -50,7 +70,7 @@ const AddTitle = () => {
           onClick={handleAddTodo}
           className="bg-darkTheme px-[10px] py-[4px] text-white"
         >
-          ADD TODO
+          {isTaskModel ? "ADD TASK" : "ADD TODO"}
         </button>
       </div>
     </div>

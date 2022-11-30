@@ -6,7 +6,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   const [openTitleModel, setOpenTitleModel] = useState(false);
+  const [openEditModel, setOpenEditModel] = useState(false);
+  const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [titleData, setTitleData] = useState([]);
+  const [editDetail, setEditDetail] = useState("");
+  const [todoId, setTodoId] = useState("");
+  const [isTaskModel, setIsTaskModel] = useState(false);
+  const [taskData, setTaskData] = useState([]);
+  const [taskIndex, setTaskIndex] = useState("");
 
   useEffect(() => {
     document.body.style.overflow = openTitleModel ? "hidden" : "auto";
@@ -15,7 +22,26 @@ function App() {
   return (
     <BrowserRouter>
       <TodoContext.Provider
-        value={{ openTitleModel, setOpenTitleModel, titleData, setTitleData }}
+        value={{
+          openTitleModel,
+          setOpenTitleModel,
+          titleData,
+          setTitleData,
+          openEditModel,
+          setOpenEditModel,
+          openDeleteModel,
+          setOpenDeleteModel,
+          editDetail,
+          setEditDetail,
+          todoId,
+          setTodoId,
+          isTaskModel,
+          setIsTaskModel,
+          taskData,
+          setTaskData,
+          taskIndex,
+          setTaskIndex,
+        }}
       >
         <Routes>
           <Route

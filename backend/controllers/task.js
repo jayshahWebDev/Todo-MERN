@@ -6,11 +6,14 @@ exports.getAllTask = async (req, res) => {
 
     if (!_id) throw new Error("Please pass valid id");
 
-    let getAllTask = await Title.find({}, { task: 1 });
+    let titleExists = await Title.findOne({ _id });
+    if (!titleExists) throw new Error("Title is not exists");
+
+    // let getAllTask = await Title.find({}, { task: 1 });
 
     res.status(200).json({
       success: true,
-      task: getAllTask,
+      task: titleExists.task,
     });
   } catch (error) {
     console.log("getAllTask Error::", error.message);
@@ -32,7 +35,7 @@ exports.addUpdateTask = async (req, res) => {
     let titleExists = await Title.findOne({ _id });
     if (!titleExists) throw new Error("Title is not exists");
 
-    if (index) {
+    if (index >= 0) {
       titleExists.task[index] = task;
     } else {
       titleExists.task.push(task);
@@ -58,7 +61,7 @@ exports.removeTask = async (req, res) => {
     let { _id } = req.params,
       { index } = req.body;
 
-    if (!_id || !index) throw new Error("Pass required fields");
+    if (!_id || !index < 0) throw new Error("Pass required fields");
 
     let titleExists = await Title.findOne({ _id });
     if (!titleExists) throw new Error("Title is not exists");

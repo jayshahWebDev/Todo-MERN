@@ -8,10 +8,25 @@ import { NavLink } from "react-router-dom";
 
 const Title = () => {
   const [searchInput, setSearchInput] = useState("");
-  const { openTitleModel, setOpenTitleModel, titleData, setTitleData } =
-    useContext(TodoContext);
+  const {
+    openTitleModel,
+    setOpenTitleModel,
+    titleData,
+    setTitleData,
+    openEditModel,
+    setOpenEditModel,
+    openDeleteModel,
+    setOpenDeleteModel,
+    editDetail,
+    setEditDetail,
+    todoId,
+    setTodoId,
+    isTaskModel,
+    setIsTaskModel,
+  } = useContext(TodoContext);
 
   const openModel = () => {
+    setIsTaskModel(false);
     setOpenTitleModel(true);
   };
 
@@ -27,6 +42,18 @@ const Title = () => {
   useEffect(() => {
     fetchTitleData();
   }, []);
+
+  const handleEdit = (_id, title) => {
+    setOpenEditModel(true);
+    setEditDetail(title);
+    setTodoId(_id);
+  };
+
+  const handleRemove = (_id) => {
+    console.log("onclick delete");
+    setOpenDeleteModel(true);
+    setTodoId(_id);
+  };
 
   return (
     <div
@@ -46,7 +73,6 @@ const Title = () => {
       <div className="flex flex-wrap gap-y-[15px] gap-x-[15px] justify-center">
         {titleData &&
           titleData.map((title) => (
-            // <NavLink key={title._id}>
             <div
               key={title._id}
               className="shadow-lg w-[270px] px-[10px] py-[15px] flex gap-x-[10px] items-center"
@@ -62,33 +88,21 @@ const Title = () => {
                   size={"25px"}
                   color={"#4169E1"}
                   className="cursor-pointer"
+                  onClick={() => {
+                    handleEdit(title._id, title.title);
+                  }}
                 />
                 <AiOutlineDelete
                   size={"25px"}
                   color={"#E21717"}
                   className="cursor-pointer"
+                  onClick={() => {
+                    handleRemove(title._id);
+                  }}
                 />
               </div>
             </div>
-            // </NavLink>
           ))}
-        {/* <div className="shadow-md w-[270px] p-[10px] flex gap-x-[10px] items-center">
-          <p className="font-Montserrat font-medium h-auto ">
-            Attend Live Class Leacture
-          </p>
-          <div className="flex gap-x-[10px]">
-            <FiEdit
-              size={"25px"}
-              color={"#4169E1"}
-              className="cursor-pointer"
-            />
-            <AiOutlineDelete
-              size={"25px"}
-              color={"#E21717"}
-              className="cursor-pointer"
-            />
-          </div>
-        </div> */}
       </div>
       <div
         onClick={openModel}
