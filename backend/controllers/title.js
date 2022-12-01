@@ -94,3 +94,27 @@ exports.removeTitle = async (req, res) => {
     });
   }
 };
+
+exports.searchTitle = async (req, res) => {
+  try {
+    let { search } = req.body;
+    if (!search) throw new Error("search is empty");
+    let fetchTitle = await Title.find(
+      {
+        title: { $regex: search, $options: "i" },
+      },
+      { title: 1, createdAt: 1 }
+    );
+
+    res.status(200).json({
+      success: true,
+      task: fetchTitle,
+    });
+  } catch (error) {
+    console.log("searchTitle Error::", error.message);
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
