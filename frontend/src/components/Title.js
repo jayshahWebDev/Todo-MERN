@@ -39,9 +39,22 @@ const Title = () => {
     }
   };
 
+  const fetchTitleFromSearch = async () => {
+    try {
+      let fetchData = await axios.get(`/searchTitle?search=${searchInput}`);
+      setTitleData(fetchData.data.task);
+    } catch (error) {
+      console.log("fetchTitleFromSearch Error::", error.message);
+    }
+  };
+
   useEffect(() => {
-    fetchTitleData();
-  }, []);
+    if (searchInput.length <= 0) {
+      fetchTitleData();
+      return;
+    }
+    fetchTitleFromSearch();
+  }, [searchInput]);
 
   const handleEdit = (_id, title) => {
     setOpenEditModel(true);
@@ -58,14 +71,18 @@ const Title = () => {
   return (
     <div
       className={`mx-[3%] my-[2%] flex flex-col gap-y-[20px] z-0 ${
-        openTitleModel ? "opacity-[0.2]" : ""
+        openTitleModel || openEditModel || openDeleteModel
+          ? "opacity-[0.2]"
+          : ""
       }`}
     >
       <div className="flex justify-center">
         <input
           placeholder="Search title here..."
           value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
+          onChange={(e) => {
+            setSearchInput(e.target.value);
+          }}
           className="p-[10px] border-[2px] rounded-[10px] outline-none focus:border-darkTheme w-[60%]"
         />
       </div>

@@ -97,7 +97,7 @@ exports.removeTitle = async (req, res) => {
 
 exports.searchTitle = async (req, res) => {
   try {
-    let { search } = req.body;
+    let { search } = req.query;
     if (!search) throw new Error("search is empty");
     let fetchTitle = await Title.find(
       {

@@ -61,7 +61,13 @@ const Task = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-[15px] justify-center items-center mt-[2%] mb-[2%]">
+    <div
+      className={`flex flex-col gap-y-[15px] justify-center items-center mt-[2%] mb-[2%] ${
+        openTitleModel || openEditModel || openDeleteModel
+          ? "opacity-[0.2]"
+          : ""
+      }`}
+    >
       {taskData &&
         taskData.map((task, index) => (
           <div
