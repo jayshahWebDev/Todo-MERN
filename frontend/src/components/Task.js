@@ -29,7 +29,11 @@ const Task = () => {
 
   const fetchTaskData = async () => {
     try {
-      let taskDetails = await axios.get(`/task/getAllTask/${_id}`);
+      let taskDetails = await axios.get(`/task/getAllTask/${_id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("todoToken"),
+        },
+      });
       setTaskData(taskDetails.data.task);
       setTodoId(_id);
     } catch (error) {
@@ -39,7 +43,6 @@ const Task = () => {
 
   useEffect(() => {
     fetchTaskData();
-    console.log("taskData::", taskData);
   }, []);
 
   const handleAddTask = () => {
@@ -54,8 +57,6 @@ const Task = () => {
   };
 
   const handleRemove = (index) => {
-    console.log("inside task remove");
-    console.log("index::", index);
     setTaskIndex(index);
     setOpenDeleteModel(true);
   };

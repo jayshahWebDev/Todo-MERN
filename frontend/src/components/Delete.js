@@ -21,18 +21,36 @@ const Delete = ({ value }) => {
   const handleRemove = async () => {
     try {
       if (value == "Title") {
-        let removetitle = await axios.delete(`/removeTitle/${todoId}`);
-        console.log("removetitle::", removetitle.data);
+        let removetitle = await axios.delete(`/title/removeTitle/${todoId}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("todoToken"),
+          },
+        });
 
-        let titleData = await axios.get("/getAlltitle");
+        let titleData = await axios.get("/title/getAlltitle", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("todoToken"),
+          },
+        });
         setTitleData(titleData.data.title);
       } else {
-        let removeTask = await axios.delete(`/task/removeTask/${todoId}`, {
-          data: { index: taskIndex },
-        });
-        console.log("removeTask::", removeTask.data);
+        let removeTask = await axios.delete(
+          `/task/removeTask/${todoId}`,
+          {
+            data: { index: taskIndex },
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("todoToken"),
+            },
+          }
+        );
 
-        let taskDetails = await axios.get(`/task/getAllTask/${todoId}`);
+        let taskDetails = await axios.get(`/task/getAllTask/${todoId}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("todoToken"),
+          },
+        });
         setTaskData(taskDetails.data.task);
       }
     } catch (error) {

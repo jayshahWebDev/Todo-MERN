@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import TaskPage from "./pages/TaskPage";
 import { TodoContext } from "./todoContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 
 function App() {
   const [openTitleModel, setOpenTitleModel] = useState(false);
@@ -16,8 +18,9 @@ function App() {
   const [taskIndex, setTaskIndex] = useState("");
 
   useEffect(() => {
-    document.body.style.overflow = openTitleModel ? "hidden" : "auto";
-  }, [openTitleModel]);
+    document.body.style.overflow =
+      openTitleModel || openEditModel || openDeleteModel ? "hidden" : "auto";
+  }, [openTitleModel, openDeleteModel, openEditModel]);
 
   return (
     <BrowserRouter>
@@ -44,12 +47,12 @@ function App() {
         }}
       >
         <Routes>
+          <Route path="/" element={<SignUp />} />
+          <Route path="/signIn" element={<SignIn />} />
           <Route
-            path="/"
+            path="/title"
             element={
-              <Home
-                className={`z-0 ${openTitleModel ? "overflow-hidden" : ""}`}
-              />
+              <Home className={`${openTitleModel ? "overflow-hidden" : ""}`} />
             }
           />
           <Route path="/task/:_id" element={<TaskPage />} />

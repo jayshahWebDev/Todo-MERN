@@ -23,17 +23,39 @@ const AddTitle = () => {
   const handleAddTodo = async () => {
     try {
       if (isTaskModel) {
-        let createTask = await axios.put(`/task/addUpdateTask/${todoId}`, {
-          task,
+        let createTask = await axios.put(
+          `/task/addUpdateTask/${todoId}`,
+          {
+            task,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("todoToken"),
+            },
+          }
+        );
+        let taskDetails = await axios.get(`/task/getAllTask/${todoId}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("todoToken"),
+          },
         });
-        console.log("createTask::", createTask.data);
-        let taskDetails = await axios.get(`/task/getAllTask/${todoId}`);
         setTaskData(taskDetails.data.task);
       } else {
-        let creatTodo = await axios.post("/createTitle", { title, task });
-        console.log("data::", creatTodo.data);
+        let creatTodo = await axios.post(
+          "/title/createTitle",
+          { title, task },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("todoToken"),
+            },
+          }
+        );
 
-        let titleData = await axios.get("/getAlltitle");
+        let titleData = await axios.get("/title/getAlltitle", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("todoToken"),
+          },
+        });
         setTitleData(titleData.data.title);
       }
     } catch (error) {

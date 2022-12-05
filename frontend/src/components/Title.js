@@ -32,7 +32,11 @@ const Title = () => {
 
   const fetchTitleData = async () => {
     try {
-      let titleData = await axios.get("/getAlltitle");
+      let titleData = await axios.get("/title/getAlltitle", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("todoToken"),
+        },
+      });
       setTitleData(titleData.data.title);
     } catch (error) {
       console.log("fetchTitleData Error::", error.message);
@@ -41,7 +45,14 @@ const Title = () => {
 
   const fetchTitleFromSearch = async () => {
     try {
-      let fetchData = await axios.get(`/searchTitle?search=${searchInput}`);
+      let fetchData = await axios.get(
+        `/title/searchTitle?search=${searchInput}`,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("todoToken"),
+          },
+        }
+      );
       setTitleData(fetchData.data.task);
     } catch (error) {
       console.log("fetchTitleFromSearch Error::", error.message);
@@ -63,7 +74,6 @@ const Title = () => {
   };
 
   const handleRemove = (_id) => {
-    console.log("onclick delete");
     setOpenDeleteModel(true);
     setTodoId(_id);
   };

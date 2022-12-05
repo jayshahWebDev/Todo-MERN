@@ -22,19 +22,42 @@ const Edit = ({ value }) => {
 
   const handleUpdate = async () => {
     try {
-      console.log("todoId::", todoId);
       if (value == "Title") {
-        let updateData = await axios.put(`updatetitle/${todoId}`, {
-          title: editDetail,
+        let updateData = await axios.put(
+          `/title/updatetitle/${todoId}`,
+          {
+            title: editDetail,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("todoToken"),
+            },
+          }
+        );
+        let titleData = await axios.get("/title/getAlltitle", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("todoToken"),
+          },
         });
-        let titleData = await axios.get("/getAlltitle");
         setTitleData(titleData.data.title);
       } else {
-        let updateTask = await axios.put(`/task/addUpdateTask/${todoId}`, {
-          task: editDetail,
-          index: taskIndex,
+        let updateTask = await axios.put(
+          `/task/addUpdateTask/${todoId}`,
+          {
+            task: editDetail,
+            index: taskIndex,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("todoToken"),
+            },
+          }
+        );
+        let taskDetails = await axios.get(`/task/getAllTask/${todoId}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("todoToken"),
+          },
         });
-        let taskDetails = await axios.get(`/task/getAllTask/${todoId}`);
         setTaskData(taskDetails.data.task);
       }
     } catch (error) {
