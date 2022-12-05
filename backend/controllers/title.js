@@ -2,7 +2,8 @@ const Title = require("../models/title");
 
 exports.createTitle = async (req, res) => {
   try {
-    let { title, task } = req.body;
+    let { title, task } = req.body,
+      { id } = req.currentUser;
 
     if (!title || !task) {
       throw new Error("Title and Task is required");
@@ -11,6 +12,7 @@ exports.createTitle = async (req, res) => {
     let newTitle = new Title({
       title,
       task,
+      userId: id,
     });
 
     let saveTitle = await newTitle.save();
@@ -30,7 +32,11 @@ exports.createTitle = async (req, res) => {
 
 exports.getAllTitle = async (req, res) => {
   try {
-    let findTitles = await Title.find({}, { title: 1, createdAt: 1 });
+    let { id } = req.currentUser;
+    let findTitles = await Title.find(
+      { userId: id },
+      { title: 1, createdAt: 1 }
+    );
 
     res.status(200).json({
       success: true,

@@ -2,14 +2,13 @@ const Title = require("../models/title");
 
 exports.getAllTask = async (req, res) => {
   try {
-    let { _id } = req.params;
+    let { _id } = req.params,
+      { id } = req.currentUser;
 
     if (!_id) throw new Error("Please pass valid id");
 
-    let titleExists = await Title.findOne({ _id });
+    let titleExists = await Title.findOne({ _id, userId: id });
     if (!titleExists) throw new Error("Title is not exists");
-
-    // let getAllTask = await Title.find({}, { task: 1 });
 
     res.status(200).json({
       success: true,
@@ -28,11 +27,12 @@ exports.addUpdateTask = async (req, res) => {
   try {
     let { index, task } = req.body,
       { _id } = req.params,
-      message = "Task Updated SuccessFully";
+      message = "Task Updated SuccessFully",
+      { id } = req.currentUser;
 
     if (!task) throw new Error("Task is required");
 
-    let titleExists = await Title.findOne({ _id });
+    let titleExists = await Title.findOne({ _id, userId: id });
     if (!titleExists) throw new Error("Title is not exists");
 
     if (index >= 0) {
@@ -59,11 +59,12 @@ exports.addUpdateTask = async (req, res) => {
 exports.removeTask = async (req, res) => {
   try {
     let { _id } = req.params,
-      { index } = req.body;
+      { index } = req.body,
+      { id } = req.currentUser;
 
     if (!_id || !index < 0) throw new Error("Pass required fields");
 
-    let titleExists = await Title.findOne({ _id });
+    let titleExists = await Title.findOne({ _id, userId: id });
     if (!titleExists) throw new Error("Title is not exists");
 
     titleExists.task.splice(index, 1);

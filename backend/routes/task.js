@@ -4,10 +4,11 @@ const {
   addUpdateTask,
   removeTask,
 } = require("../controllers/task");
+const auth = require("../middleware/auth");
 const router = express.Router();
 
-router.get("/getAllTask/:_id", getAllTask);
-router.put("/addUpdateTask/:_id", addUpdateTask);
-router.delete("/removeTask/:_id", removeTask);
+router.get("/getAllTask/:_id", auth, getAllTask);
+router.put("/addUpdateTask/:_id", auth, addUpdateTask);
+router.delete("/removeTask/:_id", auth, removeTask);
 
 module.exports = router;
