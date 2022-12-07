@@ -80,9 +80,9 @@ const Title = () => {
 
   return (
     <div
-      className={`mx-[3%] my-[2%] flex flex-col gap-y-[20px] z-0 ${
+      className={`mx-[3%] my-[2%] flex flex-col gap-y-[20px] ${
         openTitleModel || openEditModel || openDeleteModel
-          ? "opacity-[0.2]"
+          ? "opacity-[0.2] pointer-events-none"
           : ""
       }`}
     >

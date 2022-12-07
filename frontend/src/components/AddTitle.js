@@ -66,7 +66,7 @@ const AddTitle = () => {
   };
 
   return (
-    <div className="absolute p-[10px] bg-modelGray z-40 rounded-[10px] border-darkTheme top-[50%] left-[50%] transform -translate-x-[50%] -translate-y-[50%] shadow-xl flex flex-col gap-y-[20px] w-[300px]">
+    <div className="absolute p-[10px] z-10 bg-modelGray rounded-[10px] border-darkTheme top-[50%] left-[50%] transform -translate-x-[50%] -translate-y-[50%] shadow-xl flex flex-col gap-y-[20px] w-[300px]">
       <input
         placeholder="Enter Your Title"
         value={title}
